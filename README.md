@@ -38,7 +38,7 @@ minimize this window by being prioritized during network communication.
 ● The overall objective is to allow many clients to send new or updated files to a central
   server. Creating a system where organizations can consolidate data from multiple unix
   computers, into one or few.
-  ### FTP Client Objectives
+  #### FTP Client Objectives
   ○ User configuration determines the top level directory to “watch”
   ○ Everything included in this directory will be synced as-is to the central server on a
     configured periodic basis.
@@ -50,7 +50,7 @@ minimize this window by being prioritized during network communication.
     exists, and if so, determines if any segments have the same checksum and position as
     what is recorded.
   ○ If the segment already exists, skip. Otherwise, send.
-  ### FTP Server Objectives
+  #### FTP Server Objectives
   ○ User configuration determines the top level directory to “store”
   ○ Everything received by clients will be stored in client-specific directories underneath
     the “store” directory.
