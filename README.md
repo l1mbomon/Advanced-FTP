@@ -40,28 +40,28 @@ minimize this window by being prioritized during network communication.
   computers, into one or few.
   #### FTP Client Objectives
   ○ User configuration determines the top level directory to “watch”\
-  ○ Everything included in this directory will be synced as-is to the central server on a\
+  ○ Everything included in this directory will be synced as-is to the central server on a
     configured periodic basis.\
-  ○ Users can provide different top level directories with individual or common ranks.
-  ○ Files sent by the client will be prioritized by order of rank.
+  ○ Users can provide different top level directories with individual or common ranks.\
+  ○ Files sent by the client will be prioritized by order of rank.\
   ○ Files will be read at configured segment sizes, where a checksum is then generated
-    for each segment.
+    for each segment.\
   ○ The client communicates over HTTP/REST to the server to determine if the file
     exists, and if so, determines if any segments have the same checksum and position as
-    what is recorded.
-  ○ If the segment already exists, skip. Otherwise, send.
+    what is recorded.\
+  ○ If the segment already exists, skip. Otherwise, send.\
   #### FTP Server Objectives
-  ○ User configuration determines the top level directory to “store”
+  ○ User configuration determines the top level directory to “store”\
   ○ Everything received by clients will be stored in client-specific directories underneath
-    the “store” directory.
+    the “store” directory.\
   ○ Maintain a light-weight database containing file, checksum, client, and system
-    information.
+    information.\
   ○ User configuration allows clients of certain names to have ranks. Clients default to
-    lowest priority.
+    lowest priority.\
   ○ Respond to client HTTP/REST requests to initiate new clients, and respond to file
-    queries based on the current state of database.
-  ○ Accept new connections from known clients for receiving file segments.
-  ○ Receive and apply file segments in order of client rank.
+    queries based on the current state of database.\
+  ○ Accept new connections from known clients for receiving file segments.\
+  ○ Receive and apply file segments in order of client rank.\
   
 ● Both the client and server objectives shall be achieved through Python/Unix applications.
 User configuration will be applied at startup, then the applications may run autonomously
