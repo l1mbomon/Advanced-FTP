@@ -1,0 +1,36 @@
+--------------------------------------
+Loading configuration: etc/default_config.yaml
+	Client Data Directory: /home/limbo/Desktop/CSC573-AdvFTP-master/server/.data/
+	Segment Size: 100
+	Max Ports Per Host/File: 4
+End configuration
+--------------------------------------
+no such table: users
+Failed to fetch one from query:
+ SELECT * FROM users WHERE hostname=?
+Params: ('db-check',)
+Creating new DB
+--------------------------------------
+Loading configuration: etc/default_config.yaml
+	Client Data Directory: /home/limbo/Desktop/CSC573-AdvFTP-master/server/.data/
+	Segment Size: 100
+	Max Ports Per Host/File: 4
+End configuration
+--------------------------------------
+DB has already been initialized, reusing
+--------------------------------------
+Loading configuration: etc/default_config.yaml
+	Client Data Directory: /home/limbo/Desktop/CSC573-AdvFTP-master/server/.data/
+	Segment Size: 100
+	Max Ports Per Host/File: 4
+End configuration
+--------------------------------------
+DB has already been initialized, reusing
+--------------------------------------
+Loading configuration: etc/default_config.yaml
+	Client Data Directory: /home/limbo/Desktop/CSC573-AdvFTP-master/server/.data/
+	Segment Size: 100
+	Max Ports Per Host/File: 4
+End configuration
+--------------------------------------
+DB has already been initialized, reusing

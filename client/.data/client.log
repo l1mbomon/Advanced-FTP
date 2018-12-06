@@ -1,0 +1,24 @@
+--------------------------------------
+Loading configuration: etc/default_config.yaml
+	Server URL:  http://127.0.0.1:8081/advftp
+	Server Address:  limbo
+	Send Threads Per File: 4
+	Directories:
+{'/home/Desktop/CSC573-AdvFTP-master/etc/test_dir': {'counter': 10, 'interval': 10}}
+End configuration
+--------------------------------------
+no such table: files
+Failed to fetch one from query:
+ SELECT * FROM files WHERE file_path=?
+Params: ('db_check',)
+Creating new DB
+--------------------------------------
+Loading configuration: etc/default_config.yaml
+	Server URL:  http://127.0.0.1:8081/advftp
+	Server Address:  limbo
+	Send Threads Per File: 4
+	Directories:
+{'/home/Desktop/CSC573-AdvFTP-master/etc/test_dir': {'interval': 10, 'counter': 10}}
+End configuration
+--------------------------------------
+DB has already been initialized, reusing

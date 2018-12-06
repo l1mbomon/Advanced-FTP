@@ -1,0 +1,133 @@
+#!/bin/python3
+
+import sys
+import json
+import logging
+from flask import Flask, request
+from server_manager import ServerManager
+
+
+app = Flask(__name__)
+
+config_path = sys.argv[1] if len(sys.argv) > 1 else None
+serverMgr = ServerManager(config_path)
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('server-app')
+
+
+@app.route("/advftp")
+def base_route():
+    return  json.dumps({'msg': 'Server is healthy'}), 200
+
+
+@app.route("/advftp/register", methods=['GET'])
+def register():
+    '''
+        REGISTER
+            If hostname is not recognized by DB, allocate new space
+            Once client is recognized or allocated, allocate a set of
+            port numbers to connect to for file transfers.
+            Returns list of ports allocated.
+
+        PARAMETERS (passed in request body):
+            hostname  - clients hostname
+            portMax   - (optional) maximum number of ports/connections to return
+            Server will determine optimal number otherwise.
+    '''
+    hostname = request.args['hostname']
+    segment_size = serverMgr.register(hostname)
+    if not segment_size:
+        resp = (json.dumps({'msg': 'Client (' + str(hostname) + ') failed to register',
+                            'segment_size': segment_size}), 500)
+    else:
+        resp = (json.dumps({'msg': 'Client (' + str(hostname) + ') has been registered',
+                            'segment_size': segment_size}), 200)
+
+    return resp
+
+
+@app.route("/advftp/segments", methods=['GET'])
+def segments():
+    '''
+        SEGMENTS
+        Return a ordered list of the file's Checksums (SHAs) for each segment stored
+        Returns empty list if file is not found.
+
+        PARAMETERS (passed in request body):
+                hostname  - clients hostname
+                filename  - file path reletive to configured directory
+
+        RETURNS:    list of segment DB entires. Tuples of (<db sha>, <db idx>)
+    '''
+    hostname = request.args['hostname']
+    filename = request.args['filename']
+
+    server_segments = serverMgr.get_file_segments(filename=filename, hostname=hostname)
+
+    retcode = 500
+    msg = "No message"
+    if server_segments:
+        msg = 'File segments have been delievered'
+        retcode = 200
+    elif server_segments is not None:
+        msg = 'File does not exist on server'
+        retcode = 300
+    else:
+        msg = 'Error retrieving segments'
+        retcode = 500
+    return  json.dumps({'msg': msg, 'segments': server_segments}), retcode
+
+
+@app.route("/advftp/initSend", methods=['POST'])
+def initSend():
+    '''
+        INIT SEND
+        Return whether or not the server can open more connections.
+
+        PARAMETERS (passed in body)
+                    hostname        - clients hostname
+                    filename        - name of file being updated
+                    segment_size    - size in bytes of one segment for each file.
+                                      Segment size and size of SHA256 is constant, but filename will
+                                      make size dynamic.
+                    num_segments    - number of segments about to be sent
+    '''
+    # Extract parameters
+    hostname = request.form['hostname']
+    segment_size = int(request.form['seg_size'])
+    num_segments = int(request.form['num_seg'])
+    filename = request.form['filename']
+    # Check if can recieve for host/file
+    canreceive = serverMgr.can_receive(hostname=hostname, filename=filename)
+    if not canreceive:
+        return  json.dumps({'msg': 'Service Unavailable. High load or already recieving file from host.',
+                            'ports': []}), 503
+    # Start recieve session
+    port_list = serverMgr.init_receive(hostname, segment_size, num_segments, filename)
+
+    retcode = 500
+    msg = "No message"
+    if port_list:
+        msg = 'Connections can be accepts on the provided ports'
+        retcode = 200
+    else:
+        port_list = []
+        msg = 'Error determining ports'
+        retcode = 500
+    return  json.dumps({'msg': msg, 'ports': port_list}), retcode
+
+
+
+def main():
+    '''
+        MAIN
+        Start point of execution for server
+    '''
+    # Start/create DB - clear current connections (if already created)
+    serverMgr.start()
+    # Start API server
+    app.run(host='127.0.0.1', port=8081, debug=True)
+
+
+if __name__ == '__main__':
+    main()

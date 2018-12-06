@@ -1,0 +1,14 @@
+client:
+  server_http_url: 'http://127.0.0.1:8081/advftp'
+  server_socket_address: 'Wades-PC'
+  directories:
+    - full_path: '/home/wacko/Documents/csc/573/CSC573-AdvFTP/etc/test_dir'
+      watch_interval: 10 # seconds
+  num_send_threads_per_file: 1
+
+
+server_config:
+  client_data_dir: 'server/.data/'
+  # In Bytes
+  segment_size: 100
+  max_num_ports_per_host: 1

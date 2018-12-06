@@ -1,0 +1,49 @@
+#!/bin/python3
+
+import sys
+import logging
+from client_manager import ClientManager
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+fh = logging.FileHandler('client/.data/client.log')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(fh)
+
+DEFAULT_CONFIG = ''
+
+'''
+    MAIN
+
+    Start point of execution for client
+'''
+def main():
+    # Start/Create DB (for files changed, config directory, open connections)
+
+    config_path = sys.argv[1] if len(sys.argv) > 1 else None
+    client_mgr = ClientManager(config_path)
+    # Register with server - store port numbers recieved
+    client_mgr.register()
+
+    while True:
+        changedFilePaths = []
+        # Check for file changes - get list of filenames to update
+        changedFilePaths = client_mgr.check_fs()
+
+        if changedFilePaths:
+            failed = False
+            # Initiate process to break up each file, check SHAs, and put in send queue
+            for file_name in changedFilePaths:
+                if not client_mgr.init_send(file_name):
+                    failed = True
+                    break
+            # Wait for all sending to finish and clean up
+            if not failed:
+                client_mgr.complete_sending()
+
+        # Sleep for configured time
+        client_mgr.sleep()
+
+
+if __name__ == '__main__':
+    main()
