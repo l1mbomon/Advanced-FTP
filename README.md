@@ -39,9 +39,9 @@ minimize this window by being prioritized during network communication.
   server. Creating a system where organizations can consolidate data from multiple unix
   computers, into one or few.
   #### FTP Client Objectives
-  ○ User configuration determines the top level directory to “watch”
-  ○ Everything included in this directory will be synced as-is to the central server on a
-    configured periodic basis.
+  ○ User configuration determines the top level directory to “watch”\
+  ○ Everything included in this directory will be synced as-is to the central server on a\
+    configured periodic basis.\
   ○ Users can provide different top level directories with individual or common ranks.
   ○ Files sent by the client will be prioritized by order of rank.
   ○ Files will be read at configured segment sizes, where a checksum is then generated
