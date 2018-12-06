@@ -49,7 +49,7 @@ minimize this window by being prioritized during network communication.
   ○ The client communicates over HTTP/REST to the server to determine if the file
     exists, and if so, determines if any segments have the same checksum and position as
     what is recorded.\
-  ○ If the segment already exists, skip. Otherwise, send.\
+  ○ If the segment already exists, skip. Otherwise, send.
   #### FTP Server Objectives
   ○ User configuration determines the top level directory to “store”\
   ○ Everything received by clients will be stored in client-specific directories underneath
@@ -61,7 +61,7 @@ minimize this window by being prioritized during network communication.
   ○ Respond to client HTTP/REST requests to initiate new clients, and respond to file
     queries based on the current state of database.\
   ○ Accept new connections from known clients for receiving file segments.\
-  ○ Receive and apply file segments in order of client rank.\
+  ○ Receive and apply file segments in order of client rank.
   
 ● Both the client and server objectives shall be achieved through Python/Unix applications.
 User configuration will be applied at startup, then the applications may run autonomously
