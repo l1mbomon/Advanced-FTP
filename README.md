@@ -32,3 +32,37 @@ a network, there will be an inherent latency from the time the data is originall
 the data has been completely copied to the remote server. This delay creates a window where the
 data is vulnerable to being lost. Therefore, artifacts which are deemed more critical will
 minimize this window by being prioritized during network communication.
+
+## Objectives
+
+● The overall objective is to allow many clients to send new or updated files to a central
+  server. Creating a system where organizations can consolidate data from multiple unix
+  computers, into one or few.
+  ## FTP Client Objectives
+  ○ User configuration determines the top level directory to “watch”
+  ○ Everything included in this directory will be synced as-is to the central server on a
+    configured periodic basis.
+  ○ Users can provide different top level directories with individual or common ranks.
+  ○ Files sent by the client will be prioritized by order of rank.
+  ○ Files will be read at configured segment sizes, where a checksum is then generated
+    for each segment.
+  ○ The client communicates over HTTP/REST to the server to determine if the file
+    exists, and if so, determines if any segments have the same checksum and position as
+    what is recorded.
+  ○ If the segment already exists, skip. Otherwise, send.
+  ## FTP Server Objectives
+  ○ User configuration determines the top level directory to “store”
+  ○ Everything received by clients will be stored in client-specific directories underneath
+    the “store” directory.
+  ○ Maintain a light-weight database containing file, checksum, client, and system
+    information.
+  ○ User configuration allows clients of certain names to have ranks. Clients default to
+    lowest priority.
+  ○ Respond to client HTTP/REST requests to initiate new clients, and respond to file
+    queries based on the current state of database.
+  ○ Accept new connections from known clients for receiving file segments.
+  ○ Receive and apply file segments in order of client rank.
+  
+● Both the client and server objectives shall be achieved through Python/Unix applications.
+User configuration will be applied at startup, then the applications may run autonomously
+as long as the host system is active.
