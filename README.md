@@ -1,4 +1,4 @@
 ## To Run
 
-`bash$ make cleanall`
+`bash$ make cleanall\n`
 `bash$ make demo`
